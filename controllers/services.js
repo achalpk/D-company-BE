@@ -5,7 +5,6 @@ const unlinkAsync = promisify(fs.unlink)
 
 const services = async (req,res)=>{
     const result = await models.servicesFunction();
-    // console.log(result);
     if(!result){
         res.status(500).json({ success: false, message: "Database error", token:true});
     }
