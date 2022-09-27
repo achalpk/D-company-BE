@@ -9,10 +9,14 @@ app.use(cors);
 const auth = require('./routes/auth');
 const services = require('./routes/services');
 const welcome = require('./routes/welcome');
+const job = require('./routes/job');
+const jobApplicant = require('./routes/jobApplicant');
 
 app.use('/', auth);
 app.use('/', services);
 app.use('/', welcome);
+app.use('/', job);
+app.use('/', jobApplicant);
 app.use('/', express.static('uploads/images'));
 
 
