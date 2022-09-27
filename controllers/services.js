@@ -1,7 +1,7 @@
 const models = require('../models/services');
 const fs = require('fs');
-const { promisify } = require('util')
-const unlinkAsync = promisify(fs.unlink)
+const { promisify } = require('util');
+const unlinkAsync = promisify(fs.unlink);
 
 const services = async (req,res)=>{
     const result = await models.servicesFunction();
@@ -20,7 +20,7 @@ const addService = async (req,res)=>{
         image = null;
     }
     else{
-        image = req.file.originalname;
+        image = req.body.image;
     }
     const data = {
         title:req.body.title, 
@@ -31,7 +31,7 @@ const addService = async (req,res)=>{
     }
     const result = await models.addService(data);
     if(result){
-        res.status(200).json({ success: true, message: 'Successfully Inserted', demo:Date.now() });
+        res.status(200).json({ success: true, message: 'Successfully Inserted'});
     }
     else{
         res.status(500).json({ success: false, message: "Error : Unsuccessfull Insertion"});    
@@ -46,7 +46,7 @@ const editService = async (req,res)=>{
         oldImage = null;
     }
     else{
-        image = req.file.originalname;
+        image = req.body.image;
         oldImage = req.body.oldImage;
     }
     const data = {
@@ -59,7 +59,7 @@ const editService = async (req,res)=>{
     const result = await models.editService(data);
     if(result){
         oldImage && await unlinkAsync(`./uploads/images/${oldImage}`);
-        res.status(200).json({ success: true, message: 'Updated', demo:Date.now() });
+        res.status(200).json({ success: true, message: 'Updated'});
     }
     else{
         res.status(500).json({ success: false, message: "Error : Please try again"});    
@@ -76,7 +76,7 @@ const deleteService = async (req,res)=>{
     if(result){
 
         image && await unlinkAsync(`./uploads/images/${image}`);
-        res.status(200).json({ success: true, message: 'Successfully deleted', demo:Date.now()});
+        res.status(200).json({ success: true, message: 'Successfully deleted'});
     }
     else{
         res.status(500).json({ success: false, message: "Error"});    
