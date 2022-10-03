@@ -1,9 +1,9 @@
 const {dbConn} = require('../library/database');
 
-const jobFunction = async ()=>{
+const jobFunction = async (user_id)=>{
     const db = dbConn();
     try{
-        let result = await db.query('SELECT * FROM job');
+        let result = await db.query('SELECT * FROM job WHERE id NOT IN( SELECT job_id FROM job_applicant WHERE user_id= ?)',[user_id]);
         return result;
     }
     catch(error){

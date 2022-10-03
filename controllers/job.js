@@ -1,9 +1,10 @@
 const models = require('../models/job')
 
 const job = async (req,res)=>{
-    const result = await models.jobFunction();
+    const user_id=req.headers.userid
+    const result = await models.jobFunction(user_id);
     if(!result){
-        res.status(500).json({ success: false, message: "Database error", token:true});
+        res.status(500).json({ success: false, message: "ERROR: Jobs!"});
     }
     else{
         res.status(200).json({ success: true, result: result });
@@ -12,32 +13,19 @@ const job = async (req,res)=>{
 
 
 const addJob = async (req,res)=>{
-    const result = await models.addJob(req.body);
-    if(result){
-        res.status(200).json({ success: true, message: 'Successfully Inserted' });
+    if(!req.body.title.trim() || !req.body.desc.trim() || !req.body.exp.trim() || !req.body.location.trim()){
+        res.status(500).json({ success: false, message: "Please fill the form!"});
     }
     else{
-        res.status(500).json({ success: false, message: "Error : Unsuccessfull Insertion"});    
+        const result = await models.addJob(req.body);
+        if(result){
+            res.status(200).json({ success: true, message: 'SUCCESS: Job Added!' });
+        }
+        else{
+            res.status(500).json({ success: false, message: "ERROR: Job not Add!"});    
+        }
     }
 }
-
-
-// const editWelcome = async (req,res)=>{
-//     const data = {
-//         id:req.params.id,
-//         title:req.body.title, 
-//         desc:req.body.desc, 
-//     }
-
-//     const result = await models.editWelcome(data);
-//     if(result){
-//         res.status(200).json({ success: true, message: 'Updated' });
-//     }
-//     else{
-//         res.status(500).json({ success: false, message: "Error : Please try again"});    
-//     }
-// }
-
 
 
 const deleteJob = async (req,res)=>{
@@ -45,10 +33,10 @@ const deleteJob = async (req,res)=>{
  
     const result = await models.deleteJob(id);
     if(result){
-        res.status(200).json({ success: true, message: 'Successfully deleted'});
+        res.status(200).json({ success: true, message: 'SUCCESS: Job Deleted!'});
     }
     else{
-        res.status(500).json({ success: false, message: "Error"});    
+        res.status(500).json({ success: false, message: "ERROR: Job not Delete!"});    
     }
 }
 

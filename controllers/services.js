@@ -6,7 +6,7 @@ const unlinkAsync = promisify(fs.unlink);
 const services = async (req,res)=>{
     const result = await models.servicesFunction();
     if(!result){
-        res.status(500).json({ success: false, message: "Database error", token:true});
+        res.status(500).json({ success: false, message: "ERROR: Services!"});
     }
     else{
         res.json({ success: true, result: result }).status(200);
@@ -15,26 +15,31 @@ const services = async (req,res)=>{
 
 
 const addService = async (req,res)=>{
-    let image;
-    if(!req.file){
-        image = null;
+    if(!req.body.title.trim() || !req.body.sDesc.trim() || !req.body.lDesc.trim() || !req.body.file){
+        res.status(500).json({ success: false, message: "Please fill the form!"});
     }
     else{
-        image = req.body.image;
-    }
-    const data = {
-        title:req.body.title, 
-        short_desc:req.body.sDesc, 
-        long_desc:req.body.lDesc,
-        image:image,
+        let image;
+        if(!req.file){
+            image = null;
+        }
+        else{
+            image = req.body.file;
+        }
+        const data = {
+            title:req.body.title, 
+            short_desc:req.body.sDesc, 
+            long_desc:req.body.lDesc,
+            image:image,
 
-    }
-    const result = await models.addService(data);
-    if(result){
-        res.status(200).json({ success: true, message: 'Successfully Inserted'});
-    }
-    else{
-        res.status(500).json({ success: false, message: "Error : Unsuccessfull Insertion"});    
+        }
+        const result = await models.addService(data);
+        if(result){
+            res.status(200).json({ success: true, message: 'SUCCESS: Service Added!'});
+        }
+        else{
+            res.status(500).json({ success: false, message: "ERROR: Service not Add!"});    
+        }
     }
 }
 
@@ -46,7 +51,7 @@ const editService = async (req,res)=>{
         oldImage = null;
     }
     else{
-        image = req.body.image;
+        image = req.body.file;
         oldImage = req.body.oldImage;
     }
     const data = {
@@ -59,10 +64,10 @@ const editService = async (req,res)=>{
     const result = await models.editService(data);
     if(result){
         oldImage && await unlinkAsync(`./uploads/images/${oldImage}`);
-        res.status(200).json({ success: true, message: 'Updated'});
+        res.status(200).json({ success: true, message: 'SUCCESS: Service Updated!'});
     }
     else{
-        res.status(500).json({ success: false, message: "Error : Please try again"});    
+        res.status(500).json({ success: false, message: "ERROR: Service not Update!"});    
     }
 }
 
@@ -76,10 +81,10 @@ const deleteService = async (req,res)=>{
     if(result){
 
         image && await unlinkAsync(`./uploads/images/${image}`);
-        res.status(200).json({ success: true, message: 'Successfully deleted'});
+        res.status(200).json({ success: true, message: 'SUCCESS: Service Deleted!'});
     }
     else{
-        res.status(500).json({ success: false, message: "Error"});    
+        res.status(500).json({ success: false, message: "ERROR: Service not Delete!"});    
     }
 }
 
