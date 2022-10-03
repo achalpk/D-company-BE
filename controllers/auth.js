@@ -1,4 +1,5 @@
-const models = require('../models/auth')
+const {key} = require('../config');
+const models = require('../models/auth');
 const express = require('express');
 const app = express();
 app.use(express.json());
@@ -62,12 +63,10 @@ const logIn = async (req,res)=>{
     const result = await models.logInFunction(logInData);
     if(result.length>0){
         const id = result[0].id;
-        const token = jwt.sign({id},'jwtsecretkey',{expiresIn:'3h'})
-        // console.log("Successfully Login");
-        res.json({ success: true, message: 'Successfully Login', user:logInData.username, token:token }).status(200);
+        const token = jwt.sign({id}, key, {expiresIn:'3h'})
+        res.json({ success: true, message: 'Successfully Login', user:result[0].username, userId:result[0].id, token:token }).status(200);
     }
     else if(result.length===0){
-        // console.log("Unsuccess");
         res.json({ success: false, message: 'Invalid username or password' }).status(200);
     }
     else{
