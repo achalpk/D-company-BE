@@ -18,7 +18,7 @@ const errorHandler = (req, res, next)=>{
     }
 )}
 
-router.get('/jobApplicant', jobApplicant);
+router.get('/jobApplicant', verifyJWT, jobApplicant);
 router.post('/jobApply'+'/:id', verifyJWT, errorHandler, jobApply);
-router.delete('/deleteJobApplicant'+'/:id', deleteJobApplicant);
+router.delete('/deleteJobApplicant'+'/:id', verifyJWT, deleteJobApplicant);
 module.exports = router;
