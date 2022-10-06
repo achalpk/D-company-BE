@@ -76,11 +76,10 @@ const editService = async (req,res)=>{
 const deleteService = async (req,res)=>{
     const id = req.params.id;
     const image = req.body.image;
- 
     const result = await models.deleteService(id);
     if(result){
 
-        // image && await unlinkAsync(`./uploads/images/${image}`);
+        image && await unlinkAsync(`./uploads/images/${image}`);
         res.status(200).json({ success: true, message: 'SUCCESS: Service Deleted!'});
     }
     else{

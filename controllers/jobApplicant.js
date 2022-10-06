@@ -1,4 +1,7 @@
 const models = require('../models/jobApplicant')
+const fs = require('fs');
+const { promisify } = require('util');
+const unlinkAsync = promisify(fs.unlink);
 
 const jobApplicant = async (req,res)=>{
     const result = await models.jobApplicantFunction();
@@ -36,10 +39,9 @@ const jobApply = async (req,res)=>{
 
 const deleteJobApplicant = async (req,res)=>{
     const id = req.params.id;
- 
     const result = await models.deleteJobApplicant(id);
     if(result){
-        req.body.file && await unlinkAsync(`./uploads/images/${req.body.file}`);
+        req.body.resume && await unlinkAsync(`./uploads/images/${req.body.resume}`);
         res.status(200).json({ success: true, message: 'SUCCESS: Job Applicant Deleted!'});
     }
     else{
