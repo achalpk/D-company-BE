@@ -5,7 +5,6 @@ const {job, addJob, deleteJob} = require('../controllers/job');
 const {verifyJWT} = require('../middlewares/verifyJWT');
 
 router.get('/job', verifyJWT, job)
-router.get('/jobs', job)
-router.post('/addJob', addJob);
-router.delete('/deleteJob'+'/:id', deleteJob);
+router.post('/addJob', verifyJWT, addJob);
+router.delete('/deleteJob'+'/:id', verifyJWT, deleteJob);
 module.exports = router;

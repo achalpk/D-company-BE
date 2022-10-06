@@ -5,8 +5,7 @@ const {welcome, addWelcome, editWelcome, deleteWelcome} = require('../controller
 const {verifyJWT} = require('../middlewares/verifyJWT');
 
 router.get('/welcome', verifyJWT, welcome)
-router.get('/welcomes', welcome)
-router.post('/addWelcome', addWelcome);
-router.patch('/editWelcome'+'/:id', editWelcome);
-router.delete('/deleteWelcome'+'/:id', deleteWelcome);
+router.post('/addWelcome', verifyJWT, addWelcome);
+router.patch('/editWelcome'+'/:id', verifyJWT, editWelcome);
+router.delete('/deleteWelcome'+'/:id', verifyJWT, deleteWelcome);
 module.exports = router;

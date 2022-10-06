@@ -39,7 +39,7 @@ const deleteJobApplicant = async (req,res)=>{
  
     const result = await models.deleteJobApplicant(id);
     if(result){
-        data.resume && await unlinkAsync(`./uploads/images/${data.resume}`);
+        req.body.file && await unlinkAsync(`./uploads/images/${req.body.file}`);
         res.status(200).json({ success: true, message: 'SUCCESS: Job Applicant Deleted!'});
     }
     else{

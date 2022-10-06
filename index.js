@@ -1,4 +1,4 @@
-const {port} = require('./config');
+const {environment, port} = require('./config');
 
 const express = require('express');
 const app = express();
@@ -20,9 +20,8 @@ app.use('/', job);
 app.use('/', jobApplicant);
 app.use('/', express.static('uploads/images'));
 
-
 app.listen(port,(req,res)=>{
-    console.log('Running');
+    console.log('Running', environment, 'on port',port );
 })
 
 

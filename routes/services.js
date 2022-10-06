@@ -19,9 +19,8 @@ const errorHandler = (req, res, next)=>{
 )}
 
 router.get('/services', verifyJWT, services);
-router.get('/service', services);
-router.post('/addService',errorHandler, addService);
-router.patch('/editService'+'/:id', errorHandler, editService);
-router.delete('/deleteService'+'/:id', deleteService);
+router.post('/addService', verifyJWT, errorHandler, addService);
+router.patch('/editService'+'/:id', verifyJWT, errorHandler, editService);
+router.delete('/deleteService'+'/:id', verifyJWT, deleteService);
 
 module.exports = router;
